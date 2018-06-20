@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% if error %}
+    <p>{{ error.messageKey }}</p>
+    {{ dump(error.messageData) }}
+{% endif %}
+
+{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+    Hi {{ app.user.username }}<br />
+{% endif %}
+
+{% if is_granted("ROLE_ADMIN") %}
+    <p>YOU ARE AN ADMIN</p>
+{% elseif is_granted("ROLE_USER") %}
+    <p>YOU ARE A USER</p>
+{% else %}
+    <h3>!!!! You Have to Register Or Login to Continue !!!!</h3>
+{% endif %}
+
+    <h2>LOGIN</h2>
+    <form action="{{ path('login') }}" method="post">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+        <label for="username">Username:</label>
+        <input type="text" name="_username" value="{{ last_username }}" />
+        <label for="password">Password:</label>
+        <input type="password" name="_password" />
+        <button type="submit">LOGIN</button>
+    </form>
+    <h2>REGISTER</h2>
+    <form action="{{ path('register') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" name="_username" value="{{ last_username }}" />
+        <label for="password">Password:</label>
+        <input type="password" name="_password" />
+        <button type="submit">REGISTER</button>
+    </form>
+
+{% endblock %}

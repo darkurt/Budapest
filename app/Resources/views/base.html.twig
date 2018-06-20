@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+    <a href="{{ path('advert') }}">LIST Adverts</a> -
+    {% if is_granted("IS_AUTHENTICATED_FULLY") %}<a href="{{ path("addform") }}">Add a new Advert</a> - {% endif %}
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}<a href="{{ path('login') }}">LOGIN</a> -{% endif %}
+    {% if is_granted("IS_AUTHENTICATED_FULLY") %}<a href="{{ path('logout') }}">LOGOUT</a>{% endif %}
+
+    <hr/>
+
+    {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

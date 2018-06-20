@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% set notices = app.session.flashbag.get('notice') %}
+    {% for msg in notices %}
+        <p style="color:red">{{ msg }}</p>
+    {% endfor %}
+    {% if notices is not empty %}
+        <hr/>
+    {% endif %}
+    <br>
+    <br>
+
+
+    <h1>List of all adverts</h1>
+
+    {% for advert in adverts  %}
+        <tr>
+            <td>{{ advert.getTitle }}<br></td>
+            <td>{{ advert.getContent }}<br></td>
+            {% if is_granted('ROLE_ADMIN') %}
+            <td><a href="{{ path("deleteAdvert", { 'id': advert.id }) }}">Supprimer</a></td>
+            {% endif %}
+            <td><a href="{{ path("oneadvert", { 'id': advert.id }) }}">Voir</a></td>
+            <br><br>
+        </tr>
+    {% endfor %}
+
+
+
+    {% endblock %}

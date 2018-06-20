@@ -1,0 +1,237 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ */
+class User implements UserInterface
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+
+    /**
+     * @ORM\Column(type="string", length=100, nullable=false, options={"comment":"Root rank"} )
+     */
+    private $user_group;
+
+
+
+    /**
+   * @ORM\OneToMany(targetEntity="Application", mappedBy="application_user")
+   */
+    private $user_application;
+
+
+    /**
+   * @ORM\OneToMany(targetEntity="Advert", mappedBy="advert_user")
+   */
+    private $user_advert;
+
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRoles()
+    {
+        //return ['ROLE_A', 'ROLE_B', 'ROLE_TBD1', 'ROLE_TBD2', 'ROLE_ROOT'];
+        return array("ROLE_".$this->getUserGroup());
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+
+    public function eraseCredentials()
+    {
+        $this->setUserPass("");
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user_application = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add userApplication
+     *
+     * @param \AppBundle\Entity\Application $userApplication
+     *
+     * @return User
+     */
+    public function addUserApplication(\AppBundle\Entity\Application $userApplication)
+    {
+        $this->user_application[] = $userApplication;
+
+        return $this;
+    }
+
+    /**
+     * Remove userApplication
+     *
+     * @param \AppBundle\Entity\Application $userApplication
+     */
+    public function removeUserApplication(\AppBundle\Entity\Application $userApplication)
+    {
+        $this->user_application->removeElement($userApplication);
+    }
+
+    /**
+     * Get userApplication
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserApplication()
+    {
+        return $this->user_application;
+    }
+
+    /**
+     * Add userAdvert
+     *
+     * @param \AppBundle\Entity\Advert $userAdvert
+     *
+     * @return User
+     */
+    public function addUserAdvert(\AppBundle\Entity\Advert $userAdvert)
+    {
+        $this->user_advert[] = $userAdvert;
+
+        return $this;
+    }
+
+    /**
+     * Remove userAdvert
+     *
+     * @param \AppBundle\Entity\Advert $userAdvert
+     */
+    public function removeUserAdvert(\AppBundle\Entity\Advert $userAdvert)
+    {
+        $this->user_advert->removeElement($userAdvert);
+    }
+
+    /**
+     * Get userAdvert
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserAdvert()
+    {
+        return $this->user_advert;
+    }
+
+
+
+
+    /**
+     * Set userGroup
+     *
+     * @param string $userGroup
+     *
+     * @return User
+     */
+    public function setUserGroup($userGroup)
+    {
+        $this->user_group = $userGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get userGroup
+     *
+     * @return string
+     */
+    public function getUserGroup()
+    {
+        return $this->user_group;
+    }
+}

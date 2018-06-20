@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+    <table border="1">
+        <tr><td>Title:</td><td>{{ advert.getTitle }}</td></tr>
+        <tr><td>Content:</td><td>{{ advert.getContent}}</td></tr>
+        <tr><td>Create by :</td><td>{{ advert.getAdvertUser.getUsername}}</td></tr>
+
+    </table>
+
+
+
+    <h3>Reply To this Advert : </h3>
+
+
+
+    <div class="well">
+
+      {{ form(form) }}
+
+    </div>
+        {% endblock %}
